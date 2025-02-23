@@ -44,6 +44,7 @@ const appRouter = createBrowserRouter(
       element: <ErrorPage />
     }
   ],
+  { basename: "/" }
 );
 
 
