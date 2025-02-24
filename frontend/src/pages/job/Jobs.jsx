@@ -7,11 +7,11 @@ import useGetAllJobs from "@/hooks/useGetAllJobs";
 import React from "react";
 
 function Jobs() {
-  useGetAllJobs()
+  // useGetAllJobs()
   return (
     <div className="">
       <Navbar />
-      <hr className="text-black/20"/>
+      <hr className="text-black/20" />
       <CategorySeaction />
       <LatestJobs />
       <JobList />
