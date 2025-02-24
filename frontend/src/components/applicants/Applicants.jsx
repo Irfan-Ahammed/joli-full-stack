@@ -5,6 +5,7 @@ import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setAllApplicants } from "@/redux/applicationSlice";
+import { motion } from "framer-motion";
 
 function Applicants() {
   const params = useParams();
@@ -20,9 +21,6 @@ function Applicants() {
 
         if (res.data.success && res.data.applications) {
           dispatch(setAllApplicants(res.data.applications));
-          console.log("Applicants fetched:", res.data.applications);
-        } else {
-          console.log("No applicants found.");
         }
       } catch (error) {
         console.error("Error fetching applicants:", error);
@@ -30,13 +28,21 @@ function Applicants() {
     };
 
     fetchAllApplicants();
-  }, [params.id, dispatch]); // Add dependencies
+  }, [params.id, dispatch]);
 
   return (
-    <div>
-      <h1 className="font-bold text-xl my-5"> Applicants </h1>
-      <ApplicantsTable params={params}/>
-    </div>
+    <motion.div
+      className=" px-4 md:py-5 py-3 lg:mx-44  flex-col mt-3"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <h1 className="font-bold text-2xl mb-5 text-gray-900 dark:text-white">
+        Applicants
+      </h1>
+      <p>A list of your recent applicants</p>
+      <ApplicantsTable />
+    </motion.div>
   );
 }
 

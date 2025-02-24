@@ -1,32 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
+import { motion } from "framer-motion";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow
-} from "../ui/table";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { MoreHorizontal } from "lucide-react";
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
+import { timeAgo } from "@/utils/timeAgo";
+import { ChevronDown, ChevronUp, MoreHorizontal } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import axios from "axios";
 import { APPLICATION_API_END_POINT } from "@/utils/constant";
-import { timeAgo } from "@/utils/timeAgo";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 
-const shortListingStatus = ["Accepted", "Rejected"];
+const shortListingStatus = [
+  { labal: "Accepted", color: "bg-[#06D001]",focusColor:"hover:bg-green-400" },
+  { labal: "Rejected", color: "bg-[#FF2929]",focusColor:"hover:bg-red-400" }
+];
 
-function ApplicantsTable() {
+const ApplicantsTable = () => {
   const applicants = useSelector((state) => state.application.applicants) || [];
+  const [expandedRow, setExpandedRow] = useState(null);
 
   const statusHandler = async (status, id) => {
     try {
       const res = await axios.post(
         `${APPLICATION_API_END_POINT}/status/${id}/update`,
         { status },
-        { withCredentials: true } // Added inside request
+        { withCredentials: true }
       );
 
       if (res.data.success) {
@@ -38,59 +44,119 @@ function ApplicantsTable() {
   };
 
   return (
-    <div className="overflow-x-auto">
-      <Table>
-        <TableCaption>A list of your recent applied users</TableCaption>
+    <motion.div
+      className="overflow-x-auto p-4 bg-white max-w-[800px] rounded-xl shadow-md"
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Table className="">
         <TableHeader>
-          <TableRow>
+          <TableRow className="bg-gray-50">
             <TableHead>Full Name</TableHead>
-            <TableHead>Email</TableHead>
-            <TableHead>Contact</TableHead>
+            <TableHead className="hidden md:table-cell">Contact</TableHead>
             <TableHead>Date</TableHead>
-            <TableHead className="text-right">Action</TableHead>
+            <TableHead className="text-right ">Action</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {applicants.length > 0 ? (
             applicants.map((app, index) => (
-              <TableRow key={index} className="odd:bg-white even:bg-gray-100">
-                <TableCell>{app.applicant?.fullname || "N/A"}</TableCell>
-                <TableCell>{app.applicant?.email || "N/A"}</TableCell>
-                <TableCell>{app.applicant?.phoneNumber || "N/A"}</TableCell>
-                <TableCell>
-                {timeAgo(app.appliedAt)}
-                </TableCell>
-                <TableCell className="text-right">
-                  <Popover>
-                    <PopoverTrigger>
-                      <MoreHorizontal className="cursor-pointer" />
-                    </PopoverTrigger>
-                    <PopoverContent className="w-32">
+              <React.Fragment key={app._id || index}>
+                <motion.tr
+                  className="cursor-pointer border-b border-slate-300 hover:bg-gray-50"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  onClick={() =>
+                    setExpandedRow(expandedRow === index ? null : index)
+                  }
+                >
+                  <TableCell className="font-medium">
+                    {app.applicant?.fullname || "N/A"}
+                  </TableCell>
+                  <TableCell className="hidden md:table-cell">
+                    {app.applicant?.phoneNumber || "N/A"}
+                  </TableCell>
+                  <TableCell className="border-0">
+                    <Badge variant="outline">{timeAgo(app.appliedAt)}</Badge>
+                  </TableCell>
+                  <TableCell className="flex sm:hidden justify-end mr-2">
+                    {expandedRow === index ? (
+                      <ChevronUp className="w-5 h-5 text-gray-600" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-gray-600" />
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right hidden md:table-cell">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button variant="ghost" size="sm">
+                          <MoreHorizontal className="w-5 h-5" />
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-36 p-2 bg-white border-slate-200">
+                        {shortListingStatus.map((status, i) => (
+                          <Button
+                            key={i}
+                            variant="outline"
+                            size="sm"
+                            className={`w-full mb-2 border-slate-300 shadow-sm ${status.color} ${status.focusColor} text-white font-poppins`}
+                            onClick={() => statusHandler(status.labal, app._id)}
+                          >
+                            {status.labal}
+                          </Button>
+                        ))}
+                      </PopoverContent>
+                    </Popover>
+                  </TableCell>
+                </motion.tr>
+                {expandedRow === index && (
+                  <motion.tr
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    transition={{ duration: 0.3 }}
+                    className="sm:hidden"
+                  >
+                    <TableCell
+                      colSpan="3"
+                      className="p-4 bg-slate-100 rounded-md "
+                    >
+                      <p className="text-gray-700">
+                        Email: {app.applicant?.email || "N/A"}
+                      </p>
+                      <p className="text-gray-700">
+                        Contact: {app.applicant?.phoneNumber || "N/A"}
+                      </p>
+                      <div className="mt-2 flex gap-2">
                       {shortListingStatus.map((status, i) => (
-                        <div
-                          key={i}
-                          onClick={() => statusHandler(status, app._id)}
-                          className="flex items-center my-2 cursor-pointer hover:bg-gray-200 p-2 rounded-md"
-                        >
-                          <span>{status}</span>
-                        </div>
-                      ))}
-                    </PopoverContent>
-                  </Popover>
-                </TableCell>
-              </TableRow>
+                          <Button
+                            key={i}
+                            variant="outline"
+                            size="sm"
+                            className={` mb-2 border-slate-300 shadow-sm ${status.color} ${status.focusColor} text-white font-poppins`}
+                            onClick={() => statusHandler(status.labal, app._id)}
+                          >
+                            {status.labal}
+                          </Button>
+                        ))}
+                      </div>
+                    </TableCell>
+                  </motion.tr>
+                )}
+              </React.Fragment>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan="6" className="text-center py-4">
+              <TableCell colSpan="3" className="text-center py-4">
                 No applicants found
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
-    </div>
+    </motion.div>
   );
-}
+};
 
 export default ApplicantsTable;

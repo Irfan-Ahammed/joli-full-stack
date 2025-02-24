@@ -38,7 +38,6 @@ const Profile = () => {
           <p className="text-sm opacity-80">{user?.profile?.bio || "Bio not provided"}</p>
         </div>
         
-        {/* Action Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mt-6">
           <Dialog>
             <DialogTrigger asChild>
@@ -73,7 +72,6 @@ const Profile = () => {
           </Dialog>
         </div>
         
-        {/* Contact Info */}
         <div className="mt-6 space-y-3 text-center">
           <p><span className="font-medium">📧 Email:</span> {user?.email || "Not Provided"}</p>
           <p><span className="font-medium">📞 Contact:</span> {user?.phoneNumber || "Not Provided"}</p>
@@ -83,13 +81,13 @@ const Profile = () => {
 
       {/* Jobs Sections */}
       <div className="lg:col-span-2 space-y-6">
-        <div className="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg">
-          <h1 className="text-xl font-medium mb-4 text-gray-800">Applied Jobs</h1>
+        <div className="border border-gray-200 rounded-2xl p-3 sm:p-6 bg-white shadow-lg">
+          <h1 className="text-xl font-medium font-poppins mb-4 text-gray-800">Applied Jobs</h1>
           <AppliedJobTable />
         </div>
         
-        <div className="border border-gray-200 rounded-2xl p-6 bg-white shadow-lg">
-          <h1 className="text-xl font-medium mb-4 text-gray-800">Created Jobs</h1>
+        <div className="border border-gray-200 rounded-2xl p-3 sm:p-6 bg-white shadow-lg">
+          <h1 className="text-xl font-medium mb-4 text-gray-800 font-poppins">Created Jobs</h1>
           <CreatedJobTable />
         </div>
       </div>

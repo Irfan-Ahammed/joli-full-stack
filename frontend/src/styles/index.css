@@ -28,6 +28,9 @@
 ::-webkit-scrollbar-corner {
   background: #f7f9fc;
 }
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 
 /* Theme Variables */
 @layer base {
@@ -49,7 +52,7 @@
   }
 
   * {
-    @apply border-border;
+    @apply border-border outline-none focus:ring-2 focus:ring-primary;
   }
 
   body {

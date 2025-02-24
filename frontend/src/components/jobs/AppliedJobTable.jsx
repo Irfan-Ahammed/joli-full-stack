@@ -6,37 +6,28 @@ import {
   TableHeader,
   TableRow,
   TableCell,
-  Table
+  Table,
 } from "../ui/table";
-import { Badge } from "../ui/badge";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import { setAppliedJob } from "@/redux/jobSlice";
+import AppliedJobRow from "./AppliedJobRow"; 
 import { timeAgo } from "@/utils/timeAgo";
 
 const AppliedJobTable = () => {
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth.user._id);
-  const appliedJobs = useSelector((state) => state.job?.appliedJobs);
-  console.log(appliedJobs);
+  const userId = useSelector((state) => state.auth.user?._id);
+  const appliedJobs = useSelector((state) => state.job?.appliedJobs || []);
 
   useEffect(() => {
     const fetchAppliedJobs = async () => {
       try {
         const res = await axios.get(
           `${APPLICATION_API_END_POINT}/appliedJobsProfile/${userId}`,
-          {
-            withCredentials: true // Ensure cookies are sent
-          }
+          { withCredentials: true }
         );
-        console.log("API Response:", res.data); // Debug the API response
-        if (Array.isArray(res.data.appliedJobs)) {
-          dispatch(setAppliedJob(res.data.appliedJobs));
-        } else {
-          console.error("Expected an array but got:", res.data.appliedJobs);
-          dispatch(setAppliedJob([])); // Set to empty array if not an array
-        }
+        dispatch(setAppliedJob(Array.isArray(res.data.appliedJobs) ? res.data.appliedJobs : []));
       } catch (error) {
         console.error("Error fetching applied jobs:", error);
       }
@@ -58,40 +49,32 @@ const AppliedJobTable = () => {
   };
 
   return (
-    <div className="applied-job-table overflow-x-auto">
-      <Table>
-        <TableCaption>A list of your applied jobs</TableCaption>
-        <TableHeader>
+    <div className="overflow-x-auto">
+      <Table className="min-w-full">
+        <TableHeader className="bg-gray-50">
           <TableRow>
-            <TableHead>Date</TableHead>
-            <TableHead>Job Role</TableHead>
-            <TableHead>Salary</TableHead>
-            <TableHead className="text-right">Status</TableHead>
+            <TableHead className="hidden sm:table-cell px-0 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Date
+            </TableHead>
+            <TableHead className="sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Job Role
+            </TableHead>
+            <TableHead className="sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Salary
+            </TableHead>
+            <TableHead className="sm:px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Status
+            </TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
-          {Array.isArray(appliedJobs) && appliedJobs.length > 0 ? (
+        <TableBody className="bg-white divide-y divide-gray-200">
+          {appliedJobs.length > 0 ? (
             appliedJobs.map((job, index) => (
-              <TableRow key={index}>
-                <TableCell>{timeAgo(job.createdAt)}</TableCell>
-                <TableCell>{job.title}</TableCell>
-                <TableCell>{job.wage}</TableCell>
-                <TableCell className="text-right">
-                  <Badge
-                    className={`${getStatusClass(
-                      job.applications[0].status
-                    )} hover:bg-transparent`}
-                  >
-                    {job.applications.length > 0
-                      ? job.applications[0].status
-                      : "Pending"}
-                  </Badge>
-                </TableCell>
-              </TableRow>
+              <AppliedJobRow key={job._id || index} job={job} getStatusClass={getStatusClass} index={index} />
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={4} className="text-center text-gray-500">
+              <TableCell colSpan={4} className="px-6 py-4 text-center text-gray-500">
                 No jobs applied yet.
               </TableCell>
             </TableRow>

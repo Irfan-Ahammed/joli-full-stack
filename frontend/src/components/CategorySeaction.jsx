@@ -1,43 +1,73 @@
 import { joliCategories } from "@/config";
 import React, { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 function CategorySection() {
   const [showMore, setShowMore] = useState(false);
   const navigate = useNavigate();
 
-  const categoriesToShow = showMore
-    ? joliCategories
-    : joliCategories.slice(0, 13);
+  const categoriesToShow = showMore ? joliCategories : joliCategories.slice(0, 13);
 
   return (
-    <div className="container mx-auto px-4 lg:px-28 pt-6 pb-2">
-      <h2 className="text-2xl font-bold mb-5">
-        Explore Categories
-      </h2>
-      <div className={`flex md:overflow-hidden showMore md:justify-start ${!showMore ? `md:flex-wrap  overflow-x-scroll`:` flex-wrap justify-center`} gap-3 py-2`} >
-        {categoriesToShow.map((item, i) => (
-          <motion.div
-            key={i}
-            className="flex items-center min-w-max md:px-3 px-1 py-2 border-slate-200 md:min-w-20 bg-[#f7faff] border rounded-lg shadow-md cursor-pointer"
-            onClick={() => navigate("/jobs")}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.8 }}
-          >
-            <p className="md:text-lg text-sm mr-1">{item.icon}</p>
-            <p className="text-xs md:text-sm">{item.name}</p>
-          </motion.div>
-        ))}
+    <div className="container mx-auto px-4 lg:px-28 pt-6 pb-2 ">
+      {/* Section Title */}
+      <motion.h2
+        initial={{ opacity: 0, y: -20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="text-2xl  font-bold mb-5 text-center md:text-start text-gray-800 dark:text-white"
+      >
+        🔎 Explore Job Categories
+      </motion.h2>
+
+      {/* Categories List */}
+      <div 
+  className={`flex ${
+    !showMore ? "md:flex-wrap overflow-x-auto scro" : "flex-wrap justify-center"
+  } gap-3 py-2`}
+>
+
+        <AnimatePresence>
+          {categoriesToShow.map((item, i) => (
+            <motion.div
+              key={i}
+              className="flex items-center min-w-max md:px-4 px-0.5  py-0.5 bg-[#f7faff] border border-slate-200 rounded-lg shadow-sm hover:shadow-lg cursor-pointer transition-all"
+              onClick={() => navigate("/jobs")}
+              whileHover={{ scale: 1.05, backgroundColor: "#E0F2FE", transition: { duration: 0.2 } }}
+              whileTap={{ scale: 0.95 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+            >
+              <span className="text-lg md:text-xl mr-2 text-gray-700 dark:text-gray-300">
+                {item.icon}
+              </span>
+              <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-200">
+                {item.name}
+              </p>
+            </motion.div>
+          ))}
+        </AnimatePresence>
       </div>
-      <div className="mt-3 text-center md:text-start">
-        <button
+
+      {/* Show More/Less Button */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="mt-3 text-center md:text-start"
+      >
+        <Button
+          variant="outline"
+          className="px-4 py-2 text-primary border-primary hover:bg-primary hover:text-white transition-all"
           onClick={() => setShowMore(!showMore)}
-          className="text-blue-500 md:font-medium md:border-primary/40 md:border md:rounded-md md:px-2 md:py-1 hover:underline"
         >
-          {showMore ? "Show Less" : "Show More"}
-        </button>
-      </div>
+          {showMore ? "Show Less ▲" : "Show More ▼"}
+        </Button>
+      </motion.div>
     </div>
   );
 }
