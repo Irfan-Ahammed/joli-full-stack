@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { textVariants } from "@/styles/framerMotion";
 import ProfileDialog from "./ProfileDialog";
 import { Search } from "lucide-react";
+import Logo from "./logo/Logo";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -31,12 +32,9 @@ function Navbar() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }} className="container mx-auto">
-      <div className="flex justify-between items-center px- md:py-5 py-3 lg:px-28">
+      <div className="flex justify-between items-center px-4 md:py-5 py-3 lg:px-28">
         {/* Logo */}
-        <Link to="/" className="font-extrabold text-3xl text-primary">
-          JOLI
-        </Link>
-
+       <Logo/>
         {/* Search Section */}
         <div className="hidden md:flex items-center space-x-3 lg:space-x-4">
           <Input type="text" placeholder="Search jobs" className="w-64 h-12 border border-gray-300 shadow-md rounded-md" />
