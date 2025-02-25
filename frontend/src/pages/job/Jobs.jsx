@@ -7,7 +7,7 @@ import useGetAllJobs from "@/hooks/useGetAllJobs";
 import React from "react";
 
 function Jobs() {
-  // useGetAllJobs()
+  useGetAllJobs()
   return (
     <div className="">
       <Navbar />

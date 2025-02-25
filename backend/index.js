@@ -17,17 +17,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-console.log(process.env.FRONTEND_URL);
+console.log("Origin:", process.env.FRONTEND_URL);
 
 const corsOptions = {
   origin: `${process.env.FRONTEND_URL}`,
-  credentials: true,
+  credentials: true
 };
 app.use(cors(corsOptions));
 
 const PORT = process.env.PORT || 3000;
 
-
+app.get("/", (req, res) => res.send("Hi there."));
 app.use("/api/v1/user", userRoute);
 //http://localhost:8003/api/v1/user/register
 //http://localhost:8003/api/v1/user/login

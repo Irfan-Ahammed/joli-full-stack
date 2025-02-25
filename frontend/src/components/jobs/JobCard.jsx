@@ -8,8 +8,10 @@ import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "sonner";
+import useGetAllJobs from "@/hooks/useGetAllJobs";
 
 function JobCard({ job }) {
+  useGetAllJobs
   const { singleJob } = useSelector((store) => store.job);
   const { user } = useSelector((store) => store.auth);
 
