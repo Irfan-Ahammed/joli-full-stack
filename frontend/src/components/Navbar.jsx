@@ -44,17 +44,17 @@ function Navbar() {
       {/* Logo */}
       <Logo />
       {/* Search Section */}
-      <div className="hidden md:flex items-center justify-around space-x-3 lg:space-x-4 w-full">
+      <div className="hidden md:flex ml-3 w-[60%] items-center justify-around lg:space-x-10 space-x-3 ">
         <Input
           type="text"
           placeholder="Search jobs"
-          className="lg:w-64 h-12 border border-gray-300 shadow-md rounded-md"
+          className="w-[50%] h-12 border lg:max-w-64 border-gray-300 rounded-md"
           />
         <SearchLocation />
       </div>
 
       {/* Buttons Section */}
-      <div className="flex items-center space-x-3 lg:space-x-5 h-12">
+      <div className="flex items-center space-x-3 ml-3 lg:space-x-5 h-12">
         <Button className="hidden md:flex items-center border text-black hover:bg-gray-100 bg-white px-4 h-12 rounded-lg shadow-md">
           <span>Get the app:</span>
           <div className="flex items-center ml-2">

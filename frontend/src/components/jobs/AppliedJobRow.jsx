@@ -5,9 +5,9 @@ import { timeAgo } from "@/utils/timeAgo";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { motion } from "framer-motion";
 
-const MotionTableRow = motion(TableRow);
 
 const AppliedJobRow = ({ job, getStatusClass, index }) => {
+  const MotionTableRow = motion(TableRow);
   const [showDateOnMobile, setShowDateOnMobile] = useState(false);
 
   return (

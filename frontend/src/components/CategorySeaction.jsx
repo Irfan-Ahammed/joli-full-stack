@@ -1,59 +1,68 @@
-import { joliCategories } from "@/config";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCategories } from "@/redux/categorySlice";
 import { Button } from "@/components/ui/button";
 
-function CategorySection() {
-  const [showMore, setShowMore] = useState(false);
-  const navigate = useNavigate();
+function CategorySection({ setSelectedCategory }) {
 
-  const categoriesToShow = showMore ? joliCategories : joliCategories.slice(0, 13);
+  const [showMore, setShowMore] = useState(false);
+  const dispatch = useDispatch();
+
+  const { categories, loading } = useSelector((state) => state.category);
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
+
+  const categoriesToShow = showMore ? categories : categories.slice(0, 13);
 
   return (
-    <div className="container mx-auto px-4 lg:px-28 pt-6 pb-2 ">
-      {/* Section Title */}
+    <div className="container mx-auto px-4 lg:px-28 pt-6 pb-2">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="text-2xl  font-bold mb-5 text-center md:text-start text-gray-800 dark:text-white"
+        className="text-2xl font-bold mb-5 text-center md:text-start text-gray-800 dark:text-white"
       >
         🔎 Explore Job Categories
       </motion.h2>
 
-      {/* Categories List */}
-      <div 
-  className={`flex ${
-    !showMore ? "md:flex-wrap overflow-x-auto scro" : "flex-wrap justify-center"
-  } gap-3 py-2`}
->
+      {loading ? (
+        <p className="text-center text-gray-500">Loading categories...</p>
+      ) : (
+        <div 
+          className={`flex ${
+            !showMore ? "md:flex-wrap overflow-x-auto" : "flex-wrap justify-center"
+          } gap-3 py-2`}
+        >
+          <AnimatePresence>
+            {categoriesToShow.map((item, i) => (
+              <motion.div
+                key={i}
+                className="flex items-center min-w-max md:px-4 px-0.5 py-0.5 bg-[#f7faff] border border-slate-200 rounded-lg shadow-sm hover:shadow-lg cursor-pointer transition-all"
+                onClick={() => setSelectedCategory(item.name)}
+                whileHover={{ scale: 1.05, backgroundColor: "#E0F2FE", transition: { duration: 0.2 } }}
+                whileTap={{ scale: 0.95 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3, delay: i * 0.05 }}
+                
+              >
+                <span className="text-lg md:text-xl mr-2 text-gray-700 dark:text-gray-300">
+                  {item.icon}
+                </span>
+                <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-200">
+                  {item.name}
+                </p>
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+      )}
 
-        <AnimatePresence>
-          {categoriesToShow.map((item, i) => (
-            <motion.div
-              key={i}
-              className="flex items-center min-w-max md:px-4 px-0.5  py-0.5 bg-[#f7faff] border border-slate-200 rounded-lg shadow-sm hover:shadow-lg cursor-pointer transition-all"
-              onClick={() => navigate("/jobs")}
-              whileHover={{ scale: 1.05, backgroundColor: "#E0F2FE", transition: { duration: 0.2 } }}
-              whileTap={{ scale: 0.95 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3, delay: i * 0.05 }}
-            >
-              <span className="text-lg md:text-xl mr-2 text-gray-700 dark:text-gray-300">
-                {item.icon}
-              </span>
-              <p className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-200">
-                {item.name}
-              </p>
-            </motion.div>
-          ))}
-        </AnimatePresence>
-      </div>
-
-      {/* Show More/Less Button */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}

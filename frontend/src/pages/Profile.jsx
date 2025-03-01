@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,9 +16,7 @@ import CreateJob from "@/components/jobs/CreateJob";
 
 const Profile = () => {
   const user = useSelector((state) => state.auth.user);
-  console.log(user);
   
-
   return (
     <div className="my-8 max-w-6xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* User Profile Section */}
@@ -83,12 +81,12 @@ const Profile = () => {
       <div className="lg:col-span-2 space-y-6">
         <div className="border border-gray-200 rounded-2xl p-3 sm:p-6 bg-white shadow-lg">
           <h1 className="text-xl font-medium font-poppins mb-4 text-gray-800">Applied Jobs</h1>
-          <AppliedJobTable />
+          <AppliedJobTable/>
         </div>
         
         <div className="border border-gray-200 rounded-2xl p-3 sm:p-6 bg-white shadow-lg">
           <h1 className="text-xl font-medium mb-4 text-gray-800 font-poppins">Created Jobs</h1>
-          <CreatedJobTable />
+          <CreatedJobTable/>
         </div>
       </div>
     </div>

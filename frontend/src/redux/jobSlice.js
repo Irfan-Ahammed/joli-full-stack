@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const jobSlice = createSlice({
   name: "job",
   initialState: {
+    loading: false,
     allJobs: [],
     singleJob: null,
     createdJob: [],
@@ -21,16 +22,14 @@ const jobSlice = createSlice({
       state.createdJob = action.payload;
     },
     CreatingJob: (state, action) => {
-      if (!Array.isArray(state.createdJob)) {
-        state.createdJob = [];
-      }
-      state.createdJob = [...state.createdJob, action.payload];
+      state.createdJob = [...(state.createdJob || []), action.payload];
     },
+
     UpdatingJob: (state, action) => {
       state.createdJob = state.createdJob.map((job) =>
         job._id === action.payload._id ? action.payload : job
       );
-      
+
       // update singleJob if it's the same job being edited
       if (state.singleJob && state.singleJob._id === action.payload._id) {
         state.singleJob = action.payload;

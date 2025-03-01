@@ -1,19 +1,20 @@
-import CategorySeaction from "@/components/CategorySeaction";
+import CategorySection from "@/components/CategorySeaction";
 import Footer from "@/components/Footer";
 import JobList from "@/components/jobs/JobList";
 import LatestJobs from "@/components/jobs/LatestJobs";
 import Navbar from "@/components/Navbar";
 import useGetAllJobs from "@/hooks/useGetAllJobs";
-import React from "react";
+import React, { useState } from "react";
 
 function Jobs() {
-  useGetAllJobs()
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  useGetAllJobs();
   return (
     <div className="">
       <Navbar />
       <hr className="text-black/20" />
-      <CategorySeaction />
-      <LatestJobs />
+      <CategorySection setSelectedCategory={setSelectedCategory} />
+      <LatestJobs selectedCategory={selectedCategory} />
       <JobList />
       <Footer />
     </div>
