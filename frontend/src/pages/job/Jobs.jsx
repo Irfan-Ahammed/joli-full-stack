@@ -9,10 +9,11 @@ import React, { useState } from "react";
 
 function Jobs() {
   const [selectedCategory, setSelectedCategory] = useState(null);
+  
   useGetAllJobs();
   return (
     <div className="">
-      <Navbar />
+      <Navbar selectedCategory={selectedCategory} />
       <SaveJobs />
       <hr className="text-black/20" />
       <CategorySection setSelectedCategory={setSelectedCategory} />

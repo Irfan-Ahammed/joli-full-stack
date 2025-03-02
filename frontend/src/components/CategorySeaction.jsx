@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategories } from "@/redux/categorySlice";
 import { Button } from "@/components/ui/button";
@@ -22,7 +21,7 @@ function CategorySection({ setSelectedCategory }) {
 
 
   return (
-    <div className="container mx-auto px-4 lg:px-28 pt-6 pb-2">
+    <div className="container mx-auto px-4 mt-36 sm:mt-20 lg:px-28 pt-6 pb-2">
       <motion.h2
         initial={{ opacity: 0, y: -20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -45,7 +44,7 @@ function CategorySection({ setSelectedCategory }) {
               <motion.div
                 key={i}
                 className="flex items-center min-w-max md:px-4 px-0.5 py-0.5 bg-[#f7faff] border border-slate-200 rounded-lg shadow-sm hover:shadow-lg cursor-pointer transition-all"
-                onClick={() => setSelectedCategory(item.name)}
+                onClick={() => setSelectedCategory({ name: item.name, icon: item.icon })}
                 whileHover={{ scale: 1.05, backgroundColor: "#E0F2FE", transition: { duration: 0.2 } }}
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, y: 20 }}

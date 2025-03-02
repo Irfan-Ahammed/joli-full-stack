@@ -12,7 +12,7 @@ import SearchLocation from "@/components/jobs/SearchLocation";
 import { useDispatch } from "react-redux";
 import { setSearchedQuery } from "@/redux/jobSlice";
 
-function Navbar() {
+function Navbar({ selectedCategory }) {
   const dispatch = useDispatch();
   const [query, setQuery] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -49,26 +49,29 @@ function Navbar() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="container mx-auto fixed bg-white z-30 border-b-2 border-slate-200"
+      className="fixed top-0 left-0 w-full bg-white z-30 shadow-lg sm:shadow-sm"
     >
-      <div className="flex justify-between items-center px-4 md:py-5 py-3 lg:px-28">
+      <div className="flex flex-wrap items-center justify-between px-4 md:px-6 lg:px-28 py-3">
         {/* Logo */}
         <Logo />
 
-        {/* Search Section */}
-        <div className="hidden md:flex ml-3 w-[60%] items-center justify-around lg:space-x-10 space-x-3">
-          <Input
-            type="text"
-            placeholder="Search jobs"
-            onChange={handleSearch}
-            className="w-[50%] h-12 border lg:max-w-64 border-gray-300 rounded-md focus:outline-none focus:border-gray-400"
-          />
+        {/* Desktop Search Section */}
+        <div className="hidden md:flex w-full md:w-[55%] items-center space-x-3">
+          <div className="relative flex items-center w-full">
+            <Input
+              type="text"
+              placeholder={selectedCategory?.name ?? "Search jobs"}
+              onChange={handleSearch}
+              className={`w-full h-12 border border-gray-300 text-lg rounded-md focus:outline-none focus:border-gray-400 px-4`}
+            />
+          </div>
+
           <SearchLocation />
         </div>
 
         {/* Buttons Section */}
-        <div className="flex items-center space-x-3 ml-3 lg:space-x-5 h-12">
-          <Button className="hidden md:flex items-center border text-black hover:bg-gray-100 bg-white px-4 h-12 rounded-lg shadow-md">
+        <div className="flex items-center space-x-3">
+          <Button className="hidden md:flex items-center border text-black hover:bg-gray-100 bg-white px-4 h-12 rounded-lg">
             <span>Get the app:</span>
             <div className="flex items-center ml-2">
               <img src={AppStore} className="w-7 h-8" alt="App Store" />
@@ -84,17 +87,14 @@ function Navbar() {
       </div>
 
       {/* Mobile Search Section */}
-      <div className="flex md:hidden mx-4 mb-5">
+      <div className="md:hidden px-4 pb-3">
         <motion.div
-          className="w-full h-12 border border-gray-300 shadow-md bg-white rounded-md relative flex items-center px-4 cursor-pointer focus:border-gray-400 focus:outline-none"
+          className="w-full h-12 border border-gray-300 bg-white rounded-md flex items-center px-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
         >
-          <motion.div whileTap={{ scale: 0.95 }}>
-            <Search className="size-6 text-gray-600" />
-          </motion.div>
-
+          <Search className="size-6 text-gray-600" />
           <AnimatePresence>
             <motion.input
               type="text"
@@ -112,9 +112,7 @@ function Navbar() {
                 setIsMobileInputFocused(false);
                 setIsAnimationEnabled(true);
               }}
-              className="absolute left-10 w-full h-full bg-transparent text-gray-500 text-md font-medium 
-              outline-none border-none focus:outline-none focus:ring-0 focus:border-transparent ml-2
-              active:outline-none active:ring-0 active:border-transparent font-poppins"
+              className="w-full bg-transparent text-gray-500 text-md outline-none border-none ml-2"
               variants={textVariants}
               initial="hidden"
               animate="visible"

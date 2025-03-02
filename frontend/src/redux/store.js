@@ -5,6 +5,7 @@ import applicationSlice from "./applicationSlice";
 import adminJobSlice from "./adminJobSlice";
 import locationSlice from "./locationSlice";
 import categorySlice from "./categorySlice";
+import saveJobsSlice from "./saveJobsSlice";
 import { createRoot } from "react-dom/client";
 
 import {
@@ -23,7 +24,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["auth","category"] // Only persist auth slice
+  whitelist: ["auth", "category"] // Only persist auth slice
 };
 
 const rootReducer = combineReducers({
@@ -32,7 +33,8 @@ const rootReducer = combineReducers({
   adminJob: adminJobSlice,
   application: applicationSlice,
   location: locationSlice,
-  category: categorySlice
+  category: categorySlice,
+  saveJobs: saveJobsSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

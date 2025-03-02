@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Bookmark, IndianRupee } from "lucide-react";
+import {
+  Bookmark,
+  BookmarkMinus,
+  BookmarkPlus,
+  IndianRupee
+} from "lucide-react";
 import { timeAgo } from "@/utils/timeAgo";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,12 +14,15 @@ import { APPLICATION_API_END_POINT } from "@/utils/constant";
 import axios from "axios";
 import { toast } from "sonner";
 import { Badge } from "../ui/badge";
+import { setSaveJobs } from "@/redux/saveJobsSlice";
 
 function JobCard({ job }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const { singleJob } = useSelector((store) => store.job);
   const { user } = useSelector((store) => store.auth);
+  const { saveJobs } = useSelector((state) => state.saveJobs);
   const categories = useSelector((state) => state.category?.categories);
 
   const jobId = job._id;
@@ -104,12 +112,19 @@ function JobCard({ job }) {
           </div>
         </div>
 
-        {/* Bookmark Icon */}
+        {/* save Jobs */}
         <button
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            dispatch(setSaveJobs(job));
+          }}
           className="text-gray-500 hover:text-gray-700 hover:bg-slate-100 rounded-full p-3 transition-colors duration-200 active:scale-95"
         >
-          <Bookmark size={23} />
+          {saveJobs.some((savedJob) => savedJob._id === job._id) ? (
+            <BookmarkMinus size={23} />
+          ) : (
+            <BookmarkPlus size={23} />
+          )}
         </button>
       </div>
 
