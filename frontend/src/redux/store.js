@@ -24,7 +24,7 @@ const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["auth", "category"] // Only persist auth slice
+  whitelist: ["auth", "category", "saveJobs"] // Only persist auth slice
 };
 
 const rootReducer = combineReducers({

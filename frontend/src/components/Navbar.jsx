@@ -112,7 +112,9 @@ function Navbar({ selectedCategory }) {
                 setIsMobileInputFocused(false);
                 setIsAnimationEnabled(true);
               }}
-              className="w-full bg-transparent text-gray-500 text-md outline-none border-none ml-2"
+              className="absolute left-10 w-full ml-6 h-full bg-transparent text-gray-500 text-sm font-medium outline-none border-none 
+              focus:outline-none focus:ring-0 focus:border-transparent 
+              active:outline-none active:ring-0 active:border-transparent"
               variants={textVariants}
               initial="hidden"
               animate="visible"
