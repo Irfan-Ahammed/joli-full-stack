@@ -11,20 +11,13 @@ const isAuthenticated = async (req, res, next) => {
       });
     }
 
-    try {
-      const decoded = jwt.verify(token, process.env.SECRET_KEY);
-      req.id = decoded.userId;
-      next();
-    } catch (error) {
-      return res.status(401).json({
-        message: "Invalid or expired token",
-        success: false
-      });
-    }
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    req.id = decoded.userId;
+    next();
   } catch (error) {
     console.error("Authentication Error:", error);
-    return res.status(500).json({
-      message: "Internal Server Error",
+    return res.status(401).json({
+      message: "Invalid or expired token",
       success: false
     });
   }

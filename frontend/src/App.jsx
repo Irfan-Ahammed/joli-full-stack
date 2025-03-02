@@ -36,10 +36,6 @@ const appRouter = createBrowserRouter(
       element: <UpdateJob />
     },
     {
-      path: "/search",
-      element: <Search />
-    },
-    {
       path: "*",
       element: <ErrorPage />
     }

@@ -8,37 +8,36 @@ import jobRoute from "./routes/job.route.js";
 import categoryRoute from "./routes/category.route.js";
 import applicationRoute from "./routes/application.route.js";
 
-dotenv.config({});
+dotenv.config(); // Load environment variables
 
 const app = express();
 
-//middleware
 
+const corsOptions = {
+  origin: process.env.FRONTEND_URL || "https://joli-india.vercel.app", // Make sure this matches your frontend domain
+  credentials: true, // Allow cookies & authentication headers
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Cookie"], // Allow 'Cookie'
+};
+
+// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+app.use(cors(corsOptions)); // Apply updated CORS settings
+app.options("*", cors(corsOptions)); // Handle preflight requests
 
-console.log("Origin:", process.env.FRONTEND_URL);
-
-const corsOptions = {
-  origin: `${process.env.FRONTEND_URL}`,
-  credentials: true
-};
-app.use(cors(corsOptions));
-
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => res.send("Hi there."));
-app.use("/api/v1/user", userRoute);
-//http://localhost:8000/api/v1/user/register
-//http://localhost:8000/api/v1/user/login
-//http://localhost:8000/api/v1/user/profile/update
 
+// Routes
+app.use("/api/v1/user", userRoute);
 app.use("/api/v1/job", jobRoute);
 app.use("/api/v1/application", applicationRoute);
 app.use("/api/v1/category", categoryRoute);
 
-app.listen(PORT, "0.0.0.0", async () => {
-  await connectDB();
-  console.log(`server running at port ${PORT}`);
+app.listen(PORT, () => {
+  connectDB();
+  console.log(`🚀 Server running on port ${PORT}`);
 });

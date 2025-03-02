@@ -6,7 +6,7 @@ import { setAppliedJob, setSingleJob } from "@/redux/jobSlice";
 import { APPLICATION_API_END_POINT, JOB_API_END_POINT } from "@/utils/constant";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 
@@ -15,12 +15,11 @@ const JobDescription = () => {
   const { user } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const { id: jobId } = useParams();
-
-  const applications = singleJob?.applications || [];
-  const isInitiallyApplied = applications.some((app) => app.applicant === user?._id);
-  const [isApplied, setIsApplied] = useState(isInitiallyApplied);
+  
+  const [isApplied, setIsApplied] = useState(false);
 
   useEffect(() => {
+    // Fetch job details when component mounts
     const fetchSingleJob = async () => {
       try {
         const res = await axios.get(`${JOB_API_END_POINT}/get/${jobId}`, { withCredentials: true });
@@ -34,6 +33,14 @@ const JobDescription = () => {
     fetchSingleJob();
   }, [jobId, dispatch]);
 
+  useEffect(() => {
+    // Update isApplied when singleJob updates
+    if (singleJob) {
+      const isJobApplied = singleJob?.applications?.some((app) => app.applicant === user?._id);
+      setIsApplied(isJobApplied);
+    }
+  }, [singleJob, user]);
+
   const applyJobHandle = async () => {
     try {
       const res = await axios.post(
@@ -43,7 +50,15 @@ const JobDescription = () => {
       );
       if (res.data.success) {
         setIsApplied(true);
-        dispatch(setSingleJob({ ...singleJob, applications: [...applications, { applicant: user?._id }] }));
+
+        // Ensure immutability when updating Redux state
+        dispatch(
+          setSingleJob({
+            ...singleJob,
+            applications: [...(singleJob.applications || []), { applicant: user?._id }]
+          })
+        );
+
         dispatch(setAppliedJob(singleJob));
         toast.success(res.data.message);
       }
@@ -96,8 +111,8 @@ const JobDescription = () => {
           <p><strong>Role:</strong> {singleJob.title || "N/A"}</p>
           <p><strong>Location:</strong> {singleJob.location || "N/A"}</p>
           <p><strong>Salary:</strong> ${singleJob.wage.toLocaleString()}</p>
-          <p><strong>Total Applicants:</strong> {applications.length || 0}</p>
-          <p><strong>Posted Date:</strong> {singleJob.createdAt.split("T")[0]}</p>
+          <p><strong>Total Applicants:</strong> {singleJob.applications?.length || 0}</p>
+          <p><strong>Posted Date:</strong> {singleJob.createdAt?.split("T")[0]}</p>
           <p><strong>Posted By:</strong> {singleJob.userFullname || "Unknown"}</p>
           <p className="col-span-2"><strong>Description:</strong> {singleJob.description || "No description available"}</p>
           <p className="col-span-2"><strong>Requirements:</strong> {singleJob.requirements?.join(", ") || "N/A"}</p>

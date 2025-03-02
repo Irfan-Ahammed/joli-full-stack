@@ -16,7 +16,10 @@ function CategorySection({ setSelectedCategory }) {
     dispatch(fetchCategories());
   }, [dispatch]);
 
-  const categoriesToShow = showMore ? categories : categories.slice(0, 13);
+  const categoriesToShow = Array.isArray(categories) 
+  ? (showMore ? categories : categories.slice(0, 13)) 
+  : [];
+
 
   return (
     <div className="container mx-auto px-4 lg:px-28 pt-6 pb-2">
