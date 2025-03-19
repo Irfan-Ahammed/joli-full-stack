@@ -2,6 +2,14 @@ import { Button } from "@/components/ui/button";
 import playstore from "../assets/playstore.png";
 import screen1 from "../assets/screen1.png";
 import screen2 from "../assets/screen2.png";
+import screen3 from "../assets/screen3.png";
+import screen4 from "../assets/screen4.png";
+import screen5 from "../assets/screen5.png";
+import screen6 from "../assets/screen6.png";
+import screen7 from "../assets/screen7.png";
+import screen8 from "../assets/screen8.png";
+import screen9 from "../assets/screen9.png";
+import screen10 from "../assets/screen10.png";
 import AppStore from "../assets/App-Store.svg";
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -18,16 +26,16 @@ function Home() {
 
   const navigate = useNavigate();
   const transitionImage = [
-    screen1,
+    screen3,
     screen2,
     screen1,
-    screen2,
-    screen1,
-    screen2,
-    screen1,
-    screen2,
-    screen1,
-    screen2,
+    screen4,
+    screen5,
+    screen6,
+    screen7,
+    screen8,
+    screen9,
+    screen10,
   ];
   const transitionTexts = [
     "Chat to the Business Owner",
@@ -104,7 +112,7 @@ function Home() {
                     key={image}
                     src={image}
                     alt={`Screen ${index + 1}`}
-                    className="md:w-1/2 w-72 absolute top-10 mt-20 md:-top-[350px]"
+                    className=" w-72 absolute top-10 mt-20 md:-top-[350px]"
                     variants={imageVariants}
                     initial="hidden"
                     animate="visible"

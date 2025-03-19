@@ -1,6 +1,7 @@
 import React, { useMemo } from "react";
 import { useSelector } from "react-redux";
 import JobCard from "./JobCard";
+import { Skeleton } from "../ui/skeleton";
 
 const LatestJobs = ({ selectedCategory }) => {
   const { allJobs = [], searchedQuery = "" } = useSelector((store) => store.job);
@@ -34,9 +35,16 @@ const LatestJobs = ({ selectedCategory }) => {
         {filteredJobs.length > 0 ? (
           filteredJobs.slice(0, 6).map((job) => <JobCard key={job._id} job={job} />)
         ) : (
-          <div className="col-span-full text-center text-gray-600 dark:text-gray-400">
-            No jobs available.
-          </div>
+          Array.from({ length: 3 }).map((_, index) => (
+            <div key={index} className="flex flex-col space-y-3 p-6 w-full max-w-sm mx-auto">
+              <Skeleton className="h-[170px] w-full rounded-xl" />
+              <div className="space-y-2">
+                <Skeleton className="h-4 w-[250px]" />
+                <Skeleton className="h-4 w-[200px]" />
+              </div>
+            </div>
+          ))
+          
         )}
       </div>
     </div>
