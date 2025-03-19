@@ -98,7 +98,7 @@ const CreateJob = () => {
 
         <Input
           type="number"
-          placeholder="Enter salary"
+          placeholder="Enter daily wage (₹)"
           value={formData.wage}
           onChange={(e) => setFormData({ ...formData, wage: e.target.value })}
         />

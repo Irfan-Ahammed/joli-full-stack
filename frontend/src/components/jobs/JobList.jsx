@@ -14,14 +14,14 @@ function JobList() {
       </h1>
 
       <div className="flex flex-col md:flex-row gap-2">
-        <div className="w-full md:w-1/5">
+        {/* <div className="w-full md:w-1/5">
         <div className="hidden md:block">
             <FilterCard />
           </div>
           <div className="block md:hidden">
             <FilterCardMobail />
           </div>
-        </div>
+        </div> */}
 
         <div className="flex-1 bg-secondary p-4 rounded-xl overflow-y-auto pb-5">
 

@@ -15,7 +15,7 @@ router.route("/post").post(isAuthenticated, createJob);
 router.route("/update/:jobId").put(isAuthenticated, updateJob);
 router.route("/get").get(getAllJobs);
 router.route("/getadminjobs/:id").get(isAuthenticated, getAdminJobs);
-router.route("/get/:id").get(isAuthenticated, getJobsById);
+router.route("/get/:id").get(getJobsById);
 router.route("/delete/:jobId").delete(isAuthenticated, deleteJob);
 
 export default router;

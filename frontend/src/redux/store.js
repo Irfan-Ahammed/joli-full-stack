@@ -6,6 +6,7 @@ import adminJobSlice from "./adminJobSlice";
 import locationSlice from "./locationSlice";
 import categorySlice from "./categorySlice";
 import saveJobsSlice from "./saveJobsSlice";
+import filterReducer from "./filterSlice";
 import { createRoot } from "react-dom/client";
 
 import {
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
   application: applicationSlice,
   location: locationSlice,
   category: categorySlice,
-  saveJobs: saveJobsSlice
+  saveJobs: saveJobsSlice,
+  filters: filterReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

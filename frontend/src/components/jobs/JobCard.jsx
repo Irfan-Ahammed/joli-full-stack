@@ -142,19 +142,6 @@ function JobCard({ job }) {
             : "N/A"}
         </Badge>
       </div>
-
-      {/* Apply Button */}
-      <button
-        onClick={applyJobHandle}
-        disabled={isApplied}
-        className={`w-full mt-6 py-2 px-4 rounded-lg transition-colors duration-300 font-semibold ${
-          isApplied
-            ? "bg-gray-500 cursor-not-allowed"
-            : "bg-blue-600 text-white hover:bg-blue-700"
-        }`}
-      >
-        {isApplied ? "Already Applied" : "Apply Now"}
-      </button>
     </div>
   );
 }

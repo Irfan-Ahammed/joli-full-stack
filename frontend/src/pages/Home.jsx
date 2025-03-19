@@ -10,8 +10,10 @@ import { imageVariants, textVariants } from "@/styles/framerMotion";
 
 import AuthDialog from "@/components/AuthDialog";
 import ProfileDialog from "@/components/ProfileDialog";
+import { useSelector } from "react-redux";
 
 function Home() {
+    const user = useSelector((state) => state.auth.user); 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const navigate = useNavigate();
@@ -48,7 +50,7 @@ function Home() {
   }, [transitionTexts.length]);
 
   return (
-    <div className="bg-gradient-to-l from-primary bg-black text-primary-foreground h-[800px] md:h-screen font-poppins md:px-5 px-4">
+    <div className="bg-gradient-to-l from-primary bg-black text-primary-foreground overflow-hidden h-screen md:h-screen font-poppins md:px-5 px-4">
       {/* Navbar */}
       <div className="flex h-16 items-center justify-between">
         <Link to="/" className="font-bold text-3xl text-white">
@@ -56,17 +58,9 @@ function Home() {
         </Link>
 
         <div className="flex items-center space-x-3">
-          <Button className="flex items-center border border-slate-700 text-white hover:border-white hover:bg-black bg-black rounded px-4">
-            <span>Get the app:</span>
-            <div className="flex items-center ml-2">
-              <img src={AppStore} className="w-8 h-9" alt="App Store" />
-              <img
-                src={playstore}
-                className="w-6 h-6 ml-2 "
-                alt="Google Play Store"
-              />
-            </div>
-          </Button>
+          {user?<Button className="flex items-center border border-slate-700 text-white hover:border-white hover:bg-black bg-black rounded px-4">
+            Welcome back {user.fullname}
+          </Button>:null}
           <ProfileDialog />
         </div>
       </div>

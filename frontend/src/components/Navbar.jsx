@@ -9,11 +9,14 @@ import ProfileDialog from "./ProfileDialog";
 import { Search } from "lucide-react";
 import Logo from "./logo/Logo";
 import SearchLocation from "@/components/jobs/SearchLocation";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSearchedQuery } from "@/redux/jobSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 function Navbar({ selectedCategory }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
   const [query, setQuery] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isMobileInputFocused, setIsMobileInputFocused] = useState(false);
@@ -71,17 +74,14 @@ function Navbar({ selectedCategory }) {
 
         {/* Buttons Section */}
         <div className="flex items-center space-x-3">
-          <Button className="hidden md:flex items-center border text-black hover:bg-gray-100 bg-white px-4 h-12 rounded-lg">
-            <span>Get the app:</span>
-            <div className="flex items-center ml-2">
-              <img src={AppStore} className="w-7 h-8" alt="App Store" />
-              <img
-                src={playstore}
-                className="w-5 ml-2"
-                alt="Google Play Store"
-              />
-            </div>
-          </Button>
+          {user ? (
+            <Button
+              onClick={() => navigate("/profile")}
+              className="flex items-center border border-slate-700 text-white hover:border-white hover:bg-black bg-black rounded px-4"
+            >
+              Welcome back {user.fullname}
+            </Button>
+          ) : null}
           <ProfileDialog />
         </div>
       </div>
@@ -112,12 +112,13 @@ function Navbar({ selectedCategory }) {
                 setIsMobileInputFocused(false);
                 setIsAnimationEnabled(true);
               }}
-              className="absolute left-10 w-full ml-6 h-full bg-transparent text-gray-500 text-sm font-medium outline-none border-none 
+              className="absolute left-10 w-full ml-6 h-full bg-transparent text-gray-500 text- font-medium outline-none border-none 
               focus:outline-none focus:ring-0 focus:border-transparent 
               active:outline-none active:ring-0 active:border-transparent"
               variants={textVariants}
               initial="hidden"
               animate="visible"
+              md
               exit="exit"
             />
           </AnimatePresence>
