@@ -12,12 +12,16 @@ dotenv.config(); // Load environment variables
 
 const app = express();
 
-
 const corsOptions = {
-  origin: process.env.FRONTEND_URL || "https://joli-india.vercel.app", // Make sure this matches your frontend domain
+  origin: process.env.FRONTEND_URL,
   credentials: true, // Allow cookies & authentication headers
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Cookie"], // Allow 'Cookie'
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Cookie"
+  ] // Allow 'Cookie'
 };
 
 // Middleware
